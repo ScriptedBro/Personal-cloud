@@ -25,13 +25,22 @@ const AddFiles = ({ currentFolder }) => {
       ...prevState, {id, name:file.name, progress:0, error:false}
     ]);
 
-    const paths = currentFolder.path.map(pt => pt.name);
+    const prevPaths = currentFolder.path.map(pt => pt.name);
+    const pathArray = ['files', currentUser.uid];
+    if (currentFolder === ROOT_FOLDER) {
+      pathArray.push(file.name);
+    } else {
+      if (prevPaths.length > 0) {
+        pathArray.push(...prevPaths);
+      }
+      if (currentFolder.name) {
+        pathArray.push(currentFolder.name);
+      }
+      pathArray.push(file.name);
+    }
+    const fullPath = pathArray.join('/');
 
-    const filePath = currentFolder === ROOT_FOLDER 
-    ? `${paths.join('/')}/${file.name}`
-    : `${paths.join('/')}/${currentFolder.name}/${file.name}`;
-
-    const storageRef = ref(storage, `/files/${currentUser.uid}/${filePath}`);
+    const storageRef = ref(storage, fullPath);
 
     const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -69,6 +78,7 @@ const AddFiles = ({ currentFolder }) => {
           createdAt: serverTimestamp(),
           folderId: currentFolder.id,
           userId: currentUser.uid,
+          path: fullPath
         }).then(data => {
           console.log("File uploaded and saved");
         }).catch(err => {

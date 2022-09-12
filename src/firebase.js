@@ -18,6 +18,7 @@ export const database = {
   folders: collection(db, 'folders'),
   files: collection(db, 'files'),
   getFolder: (id) => doc(db, 'folders', id),
+  getFile: (id) => doc(db, 'files', id),
   formatDoc: doc => {
     return {id: doc.id, ...doc.data()}
   }
