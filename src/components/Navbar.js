@@ -6,7 +6,7 @@ function NavbarComponent() {
   return (
     <Navbar bg='light' expand='sm'>
       <Container fluid>
-      <Navbar.Brand as={Link} to="/">PK Drive</Navbar.Brand>
+      <Navbar.Brand as={Link} to="/">Home Cloud</Navbar.Brand>
       <Nav>
         <Nav.Link as={Link} to='/profile'>Profile</Nav.Link>
       </Nav>
